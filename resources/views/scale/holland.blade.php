@@ -142,7 +142,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
         });
-
+        const sortedResults = Object.entries(results)
+            .filter(([_, score]) => score > 0)
+            .sort((a, b) => b[1] - a[1]);
+        
+        const topThree = sortedResults.slice(0, 3);
         // Save results to the database
         fetch('/holland-test', {
             method: 'POST',
@@ -152,7 +156,10 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             body: JSON.stringify({
                 user_id: {{ Auth::id() }}, // Assuming you're using Laravel's built-in authentication
-                results: answersToSave
+                results: answersToSave,
+                top_three: topThree
+
+
             })
         })
         .then(response => response.json())
