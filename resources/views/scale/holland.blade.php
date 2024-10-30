@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html lang="ar">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>اختبار هولاند</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+@extends('layouts.app')
+
+@section('content')
 
 <style>
         body {
@@ -78,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     questions.forEach((question) => {
         const questionCard = document.createElement('div');
-        questionCard.className = 'card';
+        questionCard.className = 'card jjj';
         questionCard.innerHTML = `
             <div class="card-header">
                 سؤال ${question.number}
@@ -161,6 +156,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
             })
+            $('#hollandForm').hide();
         })
         .then(response => response.json())
         .then(data => {
@@ -219,5 +215,4 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-</body>
-</html>
+@endsection

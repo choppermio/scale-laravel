@@ -11,6 +11,9 @@ class HollandTestController extends Controller
 {
     public function store(Request $request)
     {
+
+       
+        
         try {
             DB::beginTransaction();
 
@@ -27,7 +30,8 @@ class HollandTestController extends Controller
                 'R' => 0, 'I' => 0, 'A' => 0,
                 'S' => 0, 'E' => 0, 'C' => 0
             ];
-
+            $last_test_result = HollandTestResult::where('user_id', auth()->id())->orderBy('id', 'desc')->first();
+            $last_test_id = $last_test_result ? $last_test_result->test_number + 1 : 1;
             foreach ($data['results'] as $result) {
                 HollandTestResult::create([
                     'user_id' => $data['user_id'],
@@ -35,6 +39,7 @@ class HollandTestController extends Controller
                     'question_text' => $result['question_text'],
                     'category' => $result['category'],
                     'answer' => $result['answer'],
+                    'test_number'=>$last_test_id
                 ]);
 
                 $categoryScores[$result['category']] += $result['answer'];
