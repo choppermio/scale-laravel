@@ -90,18 +90,21 @@ document.addEventListener('DOMContentLoaded', function() {
     const optionsContainers = document.querySelectorAll('.options');
 
     optionsContainers.forEach(container => {
-        const name = container.getAttribute('data-name');
-        for (let i = 1; i <= 10; i++) {
-            const label = document.createElement('label');
-            const input = document.createElement('input');
-            input.type = 'radio';
-            input.name = name;
-            input.value = i;
-            label.appendChild(input);
-            label.appendChild(document.createTextNode(` ${i}`));
-            container.appendChild(label);
-        }
-    });
+    const name = container.getAttribute('data-name');
+    // Define emoji array in sequence from worst to best feeling
+    const emojis = ['😣', '😩', '😔', '😕', '🥺', '😮', '😌', '🙂', '😃', '🤩'];
+    
+    for (let i = 1; i <= 10; i++) {
+        const label = document.createElement('label');
+        const input = document.createElement('input');
+        input.type = 'radio';
+        input.name = name;
+        input.value = i;  // Keep the numeric value for calculations
+        label.appendChild(input);
+        label.appendChild(document.createTextNode(` ${emojis[i-1]}`));  // Use emoji instead of number
+        container.appendChild(label);
+    }
+});
 
     const submitButton = document.createElement('button');
     submitButton.type = 'submit';
