@@ -100,22 +100,9 @@
 
 
     <div class="row">
-        <div class="col-6">
+       
 
-
-            <div id="chart">
-                <div id="x-axis"></div>
-                <div id="y-axis"></div>
-                <div id="quadrants"></div>
-                <svg id="plot-area"></svg>
-            </div>
-            <div style="display: none;" id="ranking"></div>
-            <div class="card">
-                <div class="card-header">النتائج</div>
-                <div class="card-body"><div id="ranking2"></div></div></div>
-        </div>
-
-        <div class="col-6 questionss" dir="rtl" style="text-align: right;">
+        <div class="col-md-6 col-sm-12 col-xs-12 order-sm-1 order-md-2 order-1 questionss" dir="rtl" style="text-align: right;">
 <div class="card"><div class="card-body">
     <input type="radio" name="q1" value="D" id="q1a"><label for="q1a"> أتخذ قراراتي بعجلة وسرعة</label><br>
     <input type="radio" name="q1" value="C" id="q1b"><label for="q1b"> أتخذ قراراتي بحرصٍ وتأنٍ </label>
@@ -220,7 +207,20 @@
 <button onclick="selectRandomChoices()" class="btn btn-secondary">اختيار اجابات عشوائية</button>
 <button class="count btn btn-success">حساب</button>
 </div>
+<div class="col-md-6 col-sm-12 col-xs-12 order-md-2 order-1 the-chart" style="display: none;">
 
+
+    <div id="chart">
+        <div id="x-axis"></div>
+        <div id="y-axis"></div>
+        <div id="quadrants"></div>
+        <svg id="plot-area"></svg>
+    </div>
+    <div style="display: none;" id="ranking"></div>
+    <div class="card">
+        <div class="card-header">النتائج</div>
+        <div class="card-body"><div id="ranking2"></div></div></div>
+</div>
 </div>
 
 
@@ -401,7 +401,7 @@ $.ajaxSetup({
 
  // Send data to Laravel controller via AJAX
  $.ajax({
-            url: '/disc-store-answers', // URL to your Laravel route
+            url: '{{ route("disc.store.answers") }}', // URL to your Laravel route
             type: 'POST',
             data: {
                 answers: selectedAnswers,
@@ -605,7 +605,7 @@ $.ajaxSetup({
 
             let sortedNames = areas.map(area => area.name);
             $.ajax({
-            url: '/disc-store-result', // URL to your Laravel route
+            url: '{{ route("disc.store.result") }}', // URL to your Laravel route
             type: 'POST',
             data: {
                 sorted_names: sortedNames, // Send the sorted names
@@ -616,6 +616,7 @@ $.ajaxSetup({
             success: function(response) {
                 console.log('Data sent successfully:', response);
                 $('.questionss').hide()
+                $('.the-chart').show()
                 // Handle success response (e.g., show a message)
             },
             error: function(xhr) {

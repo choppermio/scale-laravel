@@ -185,7 +185,7 @@ $.ajaxSetup({
 
 
 $.ajax({
-        url: '/thakaat-answers-store', // Laravel route to handle the request
+        url: '{{ route("thakaat.answers.store") }}', // Laravel route to handle the request
         method: 'POST',
         data: {
              // CSRF token for security
@@ -237,7 +237,7 @@ sortedResults.forEach((item) => {
 // Send the results via AJAX
 function sendResults(sortedResults) {
     $.ajax({
-        url: '/store-thakaat-results', // Update with your route
+        url: '{{ route("thakaat.results.store") }}', // Update with your route
         method: 'POST',
         data: {
             results: sortedResults,

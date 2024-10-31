@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
 <style>
         body {
@@ -109,64 +110,65 @@ document.addEventListener('DOMContentLoaded', function() {
     form.appendChild(submitButton);
 
     form.addEventListener('submit', function(event) {
-        event.preventDefault();
+    event.preventDefault();
 
-        const results = {
-            R: 0,
-            I: 0,
-            A: 0,
-            S: 0,
-            E: 0,
-            C: 0
-        };
+    const results = {
+        R: 0,
+        I: 0,
+        A: 0,
+        S: 0,
+        E: 0,
+        C: 0
+    };
 
-        const answersToSave = [];
+    const answersToSave = [];
 
-        questions.forEach((question) => {
-            const container = document.querySelector(`[data-name="q${question.number}"]`);
-            const selected = container.querySelector('input[type="radio"]:checked');
-            if (selected) {
-                const answer = parseInt(selected.value);
-                results[question.category] += answer;
+    questions.forEach((question) => {
+        const container = document.querySelector(`[data-name="q${question.number}"]`);
+        const selected = container.querySelector('input[type="radio"]:checked');
+        if (selected) {
+            const answer = parseInt(selected.value);
+            results[question.category] += answer;
 
-                answersToSave.push({
-                    question_number: question.number,
-                    question_text: question.text,
-                    category: question.category,
-                    answer: answer
-                });
-            }
-        });
-        const sortedResults = Object.entries(results)
-            .filter(([_, score]) => score > 0)
-            .sort((a, b) => b[1] - a[1]);
-        
-        const topThree = sortedResults.slice(0, 3);
-        // Save results to the database
-        fetch('/holland-test', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
-            body: JSON.stringify({
-                user_id: {{ Auth::id() }}, // Assuming you're using Laravel's built-in authentication
-                results: answersToSave,
-                top_three: topThree
-
-
-            })
-            $('#hollandForm').hide();
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Results saved:', data);
-            displayResults(results);
-        })
-        .catch(error => {
-            console.error('Error saving results:', error);
-        });
+            answersToSave.push({
+                question_number: question.number,
+                question_text: question.text,
+                category: question.category,
+                answer: answer
+            });
+        }
     });
+
+    const sortedResults = Object.entries(results)
+        .filter(([_, score]) => score > 0)
+        .sort((a, b) => b[1] - a[1]);
+
+    const topThree = sortedResults.slice(0, 3);
+
+    // Save results to the database
+    fetch('{{ route("holland-test.store") }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({
+            user_id: {{ Auth::id() }}, // Assuming you're using Laravel's built-in authentication
+            results: answersToSave,
+            top_three: topThree
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Results saved:', data);
+        displayResults(results);
+        document.getElementById('hollandForm').style.display = 'none'; // Hide form after submission
+    })
+    .catch(error => {
+        console.error('Error saving results:', error);
+    });
+});
+
 
     function displayResults(results) {
         const sortedResults = Object.entries(results)

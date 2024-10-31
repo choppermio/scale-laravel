@@ -29,7 +29,7 @@ if(isset($_GET['user_id'])) {
           <div class="card-body">
             <h5 class="card-title">اختبار Holland</h5>
             <p class="card-text">اكتشف المزيد حول اختبار هولاند لمعرفة ميولك المهنية.</p>
-            <a href="{{ url('/disc-test') }}" class="btn btn-primary">ابدأ الاختبار</a>
+            <a href="{{ url('scale/holland') }}" class="btn btn-primary">ابدأ الاختبار</a>
           </div>
         </div>
       </div>
@@ -40,7 +40,7 @@ if(isset($_GET['user_id'])) {
           <div class="card-body">
             <h5 class="card-title">اختبار DISC</h5>
             <p class="card-text">تعرف على نمط شخصيتك باستخدام اختبار DISC الشهير.</p>
-            <a href="{{ url('scale/holland') }}" class="btn btn-primary">ابدأ الاختبار</a>
+            <a href="{{ url('/disc-test') }}" class="btn btn-primary">ابدأ الاختبار</a>
           </div>
         </div>
       </div>
@@ -100,9 +100,10 @@ $tests = \App\Models\ThakaatResults::where('user_id',   $user_id )->get();
 
                   @php
                 $holland_scores = \App\Models\HollandPersona::where('user_id',   $user_id )->orderBy('id', 'desc')->first(); 
+                
                          $holland_score=$holland_scores;     
                   @endphp
-                  
+                @if($holland_scores)  
 <div class="container my-4">
     <div class="row justify-content-center">
         <!-- Card 1 -->
@@ -140,7 +141,7 @@ $tests = \App\Models\ThakaatResults::where('user_id',   $user_id )->get();
         </div>
     </div>
   </div>
-
+@endif
 
 
 
