@@ -1,38 +1,35 @@
-
 @extends('layouts.app')
 
 @section('content')
-<style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        .options label {
-            display: inline-block;
-            margin-right: 10px;
-        }
-        .hidden {
-            display: none;
-        }
-    </style>
-     <style>
-        body {
-            background-color: #f8f9fa;
-        }
-        .card {
-            margin-bottom: 20px;
-        }
-        .card-header {
-            font-weight: bold;
-            background: #81a7a5;
-            color: white;
-        }
-        .options label {
-            margin-right: 15px;
-        }
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
-    </style>
-</head>
-<body>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+    }
+    .card {
+        margin-bottom: 20px;
+    }
+    .card-header {
+        font-weight: bold;
+        background: #81a7a5;
+        color: white;
+    }
+    .options label {
+        display: inline-block;
+        margin-right: 15px;
+        font-size: 1.2em;
+        cursor: pointer;
+    }
+    .options input[type="radio"] {
+        margin-right: 5px;
+    }
+    .hidden {
+        display: none;
+    }
+</style>
+
 <div class="container mt-5" style="direction:rtl; text-align:right;">
     <h1 class="text-center">اختبار أنماط التعلم</h1>
     <form id="learningStyleForm">
@@ -123,7 +120,8 @@ document.addEventListener('DOMContentLoaded', function() {
     shuffleArray(questions);
 
     const form = document.getElementById('learningStyleForm');
-iji=0;
+    let iji = 0;
+
     questions.forEach((question) => {
         iji++;
         const questionDiv = document.createElement('div');
@@ -139,6 +137,8 @@ iji=0;
 
     optionsContainers.forEach(container => {
         const name = container.getAttribute('data-name');
+        const emojis = ['😣', '😩', '😔', '😕', '🥺', '😮', '😌', '🙂', '😃', '🤩'];
+        
         for (let i = 1; i <= 10; i++) {
             const label = document.createElement('label');
             const input = document.createElement('input');
@@ -146,7 +146,7 @@ iji=0;
             input.name = name;
             input.value = i;
             label.appendChild(input);
-            label.appendChild(document.createTextNode(` ${i}`));
+            label.appendChild(document.createTextNode(` ${emojis[i-1]}`));
             container.appendChild(label);
         }
     });
@@ -160,164 +160,154 @@ iji=0;
     let startTime;
     let timeoutId;
 
-    
-    
-
     form.addEventListener('submit', function(event) {
-    event.preventDefault();
-    clearTimeout(timeoutId);
+        event.preventDefault();
+        clearTimeout(timeoutId);
 
-    const results = {};
-results2 = [];
-optionsContainers.forEach(container => {
-    const selected = container.querySelector('input[type="radio"]:checked');
-        if (selected) {
-            const questionId = container.getAttribute('data-name').replace('q', ''); // Extract question ID
-            const answer = selected.value; // Selected answer
-            results2.push({ question_id: questionId, answer: answer });
-        }
-});
-$.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
+        const results = {};
+        const results2 = [];
 
-
-$.ajax({
-        url: '{{ route("thakaat.answers.store") }}', // Laravel route to handle the request
-        method: 'POST',
-        data: {
-             // CSRF token for security
-            answers: results2
-        },
-        success: function(response) {
-            // Handle the success response (e.g., show a success message or results)
-            console.log('Data saved successfully', response);
-        },
-        error: function(error) {
-            // Handle the error response
-            console.error('Error saving data', error);
-        }
-    });
-
-    optionsContainers.forEach(container => {
-        const selected = container.querySelector('input[type="radio"]:checked');
-        if (selected) {
-            const category = container.getAttribute('data-category');
-            if (!results[category]) {
-                results[category] = 0;
+        optionsContainers.forEach(container => {
+            const selected = container.querySelector('input[type="radio"]:checked');
+            if (selected) {
+                const questionId = container.getAttribute('data-name').replace('q', '');
+                const answer = selected.value;
+                results2.push({ question_id: questionId, answer: answer });
             }
-            results[category] += parseInt(selected.value);
-        }
-    });
+        });
 
-    const totalScore = Object.values(results).reduce((sum, score) => sum + score, 0);
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
 
-    const sortedResults = Object.entries(results)
-        .map(([category, score]) => ({
-            category,
-            score,
-            percentage: (score / totalScore) * 100
-        }))
-        .sort((a, b) => b.percentage - a.percentage);
-
-    // Clear previous results
-    const resultsContainer = document.getElementById('results');
-    resultsContainer.innerHTML = '<h2>نتائجك</h2>';
-
-    // Display all results
-    
-sortedResults.forEach((item) => {
-    const resultElement = document.createElement('p');
-    resultElement.textContent = `${item.category}: ${item.score} (${item.percentage.toFixed(2)}%)`;
-    resultsContainer.appendChild(resultElement);
-});
-
-// Send the results via AJAX
-function sendResults(sortedResults) {
-    $.ajax({
-        url: '{{ route("thakaat.results.store") }}', // Update with your route
-        method: 'POST',
-        data: {
-            results: sortedResults,
-            
-        },
-        success: function(response) {
-            alert(response.message); // Notify the user
-            $('#learningStyleForm').hide(); // Hide the form
-        },
-        error: function(xhr, status, error) {
-            alert('An error occurred: ' + error);
-        }
-    });
-}
-
-// Call the function to send the results
-sendResults(sortedResults);
-
-    // Create chart
-    const ctx = document.createElement('canvas');
-    ctx.id = 'resultsChart';
-    ctx.width = 400;
-    ctx.height = 200;
-    resultsContainer.appendChild(ctx);
-
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: sortedResults.map(item => item.category),
-            datasets: [{
-                label: 'النسبة المئوية',
-                data: sortedResults.map(item => item.percentage.toFixed(2)),
-                backgroundColor: [
-                    '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40', '#FF6384', '#36A2EB'
-                ],
-                borderColor: [
-                    '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40', '#FF6384', '#36A2EB'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            indexAxis: 'y',
-            plugins: {
-                legend: {
-                    display: false,
-                },
-                title: {
-                    display: true,
-                    text: 'توزيع أنماط التعلم (النسبة المئوية)'
-                }
+        $.ajax({
+            url: '{{ route("thakaat.answers.store") }}',
+            method: 'POST',
+            data: {
+                answers: results2
             },
-            scales: {
-                x: {
-                    beginAtZero: true,
+            success: function(response) {
+                console.log('Data saved successfully', response);
+            },
+            error: function(error) {
+                console.error('Error saving data', error);
+            }
+        });
+
+        optionsContainers.forEach(container => {
+            const selected = container.querySelector('input[type="radio"]:checked');
+            if (selected) {
+                const category = container.getAttribute('data-category');
+                if (!results[category]) {
+                    results[category] = 0;
+                }
+                results[category] += parseInt(selected.value);
+            }
+        });
+
+        const totalScore = Object.values(results).reduce((sum, score) => sum + score, 0);
+
+        const sortedResults = Object.entries(results)
+            .map(([category, score]) => ({
+                category,
+                score,
+                percentage: (score / totalScore) * 100
+            }))
+            .sort((a, b) => b.percentage - a.percentage);
+
+        const resultsContainer = document.getElementById('results');
+        resultsContainer.innerHTML = '<h2>نتائجك</h2>';
+
+        sortedResults.forEach((item) => {
+            const resultElement = document.createElement('p');
+            resultElement.textContent = `${item.category}: ${item.score} (${item.percentage.toFixed(2)}%)`;
+            resultsContainer.appendChild(resultElement);
+        });
+
+        // Send results to server
+        function sendResults(sortedResults) {
+            $.ajax({
+                url: '{{ route("thakaat.results.store") }}',
+                method: 'POST',
+                data: {
+                    results: sortedResults,
+                },
+                success: function(response) {
+                    alert(response.message);
+                    $('#learningStyleForm').hide();
+                },
+                error: function(xhr, status, error) {
+                    alert('An error occurred: ' + error);
+                }
+            });
+        }
+
+        sendResults(sortedResults);
+
+        // Create chart
+        const ctx = document.createElement('canvas');
+        ctx.id = 'resultsChart';
+        ctx.width = 400;
+        ctx.height = 200;
+        resultsContainer.appendChild(ctx);
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: sortedResults.map(item => item.category),
+                datasets: [{
+                    label: 'النسبة المئوية',
+                    data: sortedResults.map(item => item.percentage.toFixed(2)),
+                    backgroundColor: [
+                        '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', 
+                        '#9966FF', '#FF9F40', '#FF6384', '#36A2EB'
+                    ],
+                    borderColor: [
+                        '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', 
+                        '#9966FF', '#FF9F40', '#FF6384', '#36A2EB'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                indexAxis: 'y',
+                plugins: {
+                    legend: {
+                        display: false,
+                    },
                     title: {
                         display: true,
-                        text: 'النسبة المئوية'
+                        text: 'توزيع أنماط التعلم (النسبة المئوية)'
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'النسبة المئوية'
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        }
                     },
-                    ticks: {
-                        callback: function(value) {
-                            return value + '%';
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'النمط'
                         }
                     }
-                },
-                y: {
-                    title: {
-                        display: true,
-                        text: 'النمط'
-                    }
                 }
             }
-        }
+        });
+
+        resultsContainer.classList.remove('hidden');
     });
-
-    resultsContainer.classList.remove('hidden');
-});
-
-
 
     // Start timer when the page loads
     startTime = Date.now();
@@ -331,7 +321,6 @@ sendResults(sortedResults);
     // Add event listener to radio buttons
     document.querySelectorAll('input[type="radio"]').forEach(radio => {
         radio.addEventListener('change', () => {
-            // Reset timer when a radio button is clicked
             clearTimeout(timeoutId);
             startTime = Date.now();
             timeoutId = setTimeout(() => {
@@ -341,21 +330,19 @@ sendResults(sortedResults);
         });
     });
 });
-</script>
-<button onclick="selectRandomChoices()">اختيار عشوائي</button>
-<script>
-        function selectRandomChoices() {
-            const optionsContainers = document.querySelectorAll('.options.card-body'); // Ensure optionsContainers is defined
 
-            optionsContainers.forEach(optionsContainers => {
-                const radios = optionsContainers.querySelectorAll('input[type="radio"]');
-                if (radios.length > 0) { // Ensure there are radio buttons in the container
-                    const randomIndex = Math.floor(Math.random() * radios.length);
-                    radios[randomIndex].checked = true;
-                }
-            });
+function selectRandomChoices() {
+    const optionsContainers = document.querySelectorAll('.options.card-body');
+    optionsContainers.forEach(container => {
+        const radios = container.querySelectorAll('input[type="radio"]');
+        if (radios.length > 0) {
+            const randomIndex = Math.floor(Math.random() * radios.length);
+            radios[randomIndex].checked = true;
         }
-
-
+    });
+}
 </script>
+
+<button onclick="selectRandomChoices()" class="btn btn-secondary mt-3">اختيار عشوائي</button>
+
 @endsection
