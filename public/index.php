@@ -12,5 +12,6 @@ if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php'))
 // Register the Composer autoloader...
 require __DIR__.'/../vendor/autoload.php';
 
-//redrect to public/home
-header('Location: /public/home');
+// Bootstrap Laravel and handle the request...
+(require_once __DIR__.'/../bootstrap/app.php')
+    ->handleRequest(Request::capture());
