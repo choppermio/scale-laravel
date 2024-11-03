@@ -24,9 +24,14 @@ if(isset($_GET['user_id'])) {
 <div class="container my-4">
     <div class="row justify-content-center">
       <!-- Card 1 -->
-      <div class="col-md-4">
+      <div class="col-md-4" style="    margin-bottom: 1em;">
+        <div class="card-header">
+            <img src="https://weflawless.co/_next/static/media/holland-paths-hero.1db239d5.svg" style="
+                width: 100%;
+            ">
+            </div>
         <div class="card text-center">
-          <div class="card-body">
+          <div class="card-body" style="border-bottom: 10px solid #0095b0;">
             <h5 class="card-title">اختبار Holland</h5>
             <p class="card-text">اكتشف المزيد حول اختبار هولاند لمعرفة ميولك المهنية.</p>
             <a href="{{ url('scale/holland') }}" class="btn btn-primary">ابدأ الاختبار</a>
@@ -35,9 +40,14 @@ if(isset($_GET['user_id'])) {
       </div>
   
       <!-- Card 2 -->
-      <div class="col-md-4">
+      <div class="col-md-4" style="    margin-bottom: 1em;">
+        <div class="card-header">
+            <img src="https://weflawless.co/_next/static/media/holland-paths-hero.1db239d5.svg" style="
+                width: 100%;
+            ">
+            </div>
         <div class="card text-center">
-          <div class="card-body">
+          <div class="card-body" style="border-bottom: 10px solid #0095b0;">
             <h5 class="card-title">اختبار DISC</h5>
             <p class="card-text">تعرف على نمط شخصيتك باستخدام اختبار DISC الشهير.</p>
             <a href="{{ url('/disc-test') }}" class="btn btn-primary">ابدأ الاختبار</a>
@@ -46,10 +56,15 @@ if(isset($_GET['user_id'])) {
       </div>
   
       <!-- Card 3 -->
-      <div class="col-md-4">
+      <div class="col-md-4" style="    margin-bottom: 1em;">
+        <div class="card-header">
+            <img src="https://weflawless.co/_next/static/media/holland-paths-hero.1db239d5.svg" style="
+                width: 100%;
+            ">
+            </div>
         <div class="card text-center">
-          <div class="card-body">
-            <h5 class="card-title">اختبار الذكاءات</h5>
+          <div class="card-body" style="border-bottom: 10px solid #0095b0;">
+            <h5 class="card-title" style="font-weight: bold;">اختبار الذكاءات</h5>
             <p class="card-text">اكتشف أنواع الذكاءات التي تميزك من خلال هذا الاختبار.</p>
             <a href="{{ url('/thakaat-test') }}" class="btn btn-primary">ابدأ الاختبار</a>
           </div>
