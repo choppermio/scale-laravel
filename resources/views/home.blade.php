@@ -7,7 +7,7 @@ if(isset($_GET['user_id'])) {
 }
 @endphp
 @section('content')
-<div class="container-fluid">
+<div class="container-fluid" style="font-family: 'Cairo';">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
@@ -34,7 +34,7 @@ if(isset($_GET['user_id'])) {
           <div class="card-body" style="border-bottom: 10px solid #0095b0;">
             <h5 class="card-title">اختبار Holland</h5>
             <p class="card-text">اكتشف المزيد حول اختبار هولاند لمعرفة ميولك المهنية.</p>
-            <a href="{{ url('scale/holland') }}" class="btn " style="    background: black !important;">ابدأ الاختبار</a>
+            <a href="{{ url('scale/holland') }}" class="btn " style="    background: black !important; color:white !important;">ابدأ الاختبار</a>
           </div>
         </div>
       </div>
@@ -50,7 +50,7 @@ if(isset($_GET['user_id'])) {
           <div class="card-body" style="border-bottom: 10px solid #0095b0;">
             <h5 class="card-title">اختبار DISC</h5>
             <p class="card-text">تعرف على نمط شخصيتك باستخدام اختبار DISC الشهير.</p>
-            <a href="{{ url('/disc-test') }}" class="btn " style="    background: black !important;">ابدأ الاختبار</a>
+            <a href="{{ url('/disc-test') }}" class="btn " style="    background: black !important; color:white !important;">ابدأ الاختبار</a>
           </div>
         </div>
       </div>
@@ -66,7 +66,7 @@ if(isset($_GET['user_id'])) {
           <div class="card-body" style="border-bottom: 10px solid #0095b0;">
             <h5 class="card-title" style="font-weight: bold;">اختبار الذكاءات</h5>
             <p class="card-text">اكتشف أنواع الذكاءات التي تميزك من خلال هذا الاختبار.</p>
-            <a href="{{ url('/thakaat-test') }}" class="btn "  style="    background: black !important;">ابدأ الاختبار</a>
+            <a href="{{ url('/thakaat-test') }}" class="btn "  style="    background: black !important; color:white !important;">ابدأ الاختبار</a>
           </div>
         </div>
       </div>
