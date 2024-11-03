@@ -1,2 +1,4 @@
-//redirect to home page in php
-<?php header('Location: /public/home');  
+<script>
+    // Redirect to home page in JavaScript
+    window.location.href = '/public/home';
+</script>
