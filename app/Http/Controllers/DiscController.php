@@ -44,17 +44,19 @@ $testNumber = $lastTest ? $lastTest->test_number + 1 : 1;
 
     public function discStoreResult(Request $request)
     {
+        return 'fsadfasd';
         // Validate the incoming request
         $request->validate([
             'sorted_names' => 'required|array',
-            // 'user_id' => 'required|exists:users,id', // Validate user_id
+            'user_id' => 'required|exists:users,id', // Validate user_id
            
         ]);
-        $lastTest = DiscAnswer::where('user_id', Auth::id())->orderBy('test_number', 'desc')->first();
+        $user_id = $request->user_id;
+        $lastTest = DiscAnswer::where('user_id', $user_id)->orderBy('test_number', 'desc')->first();
         $testNumber = $lastTest ? $lastTest->test_number  : 1;
         // Store the sorted names in the database
         DiscResult::create([
-            'user_id' => Auth::id() ? Auth::id() : 1,
+            'user_id' =>$user_id ? $user_id : 1,
             'test_number' => $testNumber,
             'results' => json_encode($request->sorted_names), // Store as JSON
         ]);
