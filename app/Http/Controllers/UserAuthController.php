@@ -8,6 +8,7 @@ use App\Models\DiscResult;
 use Illuminate\Http\Request;
 use App\Models\HollandPersona;
 use App\Models\HollandTestResult;
+use App\Models\ThakaatResult;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
@@ -186,5 +187,34 @@ if($countdiscresult > 0){
             // Log::error('Error saving Holland test results: ' . $e->getMessage());
             return response()->json(['error' => 'An error occurred while saving the results'], 500);
         }
+    }
+
+
+    public function storeThakaatResults(Request $request)
+    {
+        $validatedData = $request->validate([
+            'results' => 'required|array',
+           
+        ]);
+
+        if(ThakaatResult::where('user_id', $request->user_id)->count() > 0){
+            return response()->json(['message' => 'You have already taken the test']);
+        }
+        $lastTest = ThakaatResult::where('user_id', $request->user_id)->orderBy('test_number', 'desc')->first();
+
+        $testNumber = $lastTest ? $lastTest->test_number + 1 : 1;
+        // dd($testNumber);
+
+        foreach ($validatedData['results'] as $key => $value) {
+            ThakaatResult::create([
+                'user_id' => $request->user_id,
+                'test_number' => $testNumber,
+                'category' => $value['letter'],
+                'score' => $value['value'],
+                // 'percentage' => $result['percentage'],
+            ]);
+        }
+
+        return response()->json(['message' => 'Results saved successfully.'], 200);
     }
 }

@@ -11,3 +11,4 @@ Route::post('logout',[UserAuthController::class,'logout'])
   ->middleware('auth:sanctum');
   Route::post('discresultstore',[UserAuthController::class,'discStoreResult']);
   Route::post('storeHolland',[UserAuthController::class,'storeHolland']);
+  Route::post('storeThakaatResults',[UserAuthController::class,'storeThakaatResults']);
