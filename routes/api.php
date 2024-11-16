@@ -12,3 +12,5 @@ Route::post('logout',[UserAuthController::class,'logout'])
   Route::post('discresultstore',[UserAuthController::class,'discStoreResult']);
   Route::post('storeHolland',[UserAuthController::class,'storeHolland']);
   Route::post('storeThakaatResults',[UserAuthController::class,'storeThakaatResults']);
+  Route::get('getLastDiscResult/{user_id}',[UserAuthController::class,'getLastDiscResult']);
+  Route::get('getHollandResults/{user_id}',[UserAuthController::class,'getHollandResults']);

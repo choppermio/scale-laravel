@@ -217,4 +217,47 @@ if($countdiscresult > 0){
 
         return response()->json(['message' => 'Results saved successfully.'], 200);
     }
+
+
+    public function getLastDiscResult(Request $request)
+    {
+        // Ensure the user is authenticated via Sanctum
+        $user_id = $request->user_id;
+    
+        // Fetch the last DiscResult record for the given user_id
+        // return ($user_id);
+        $lastDiscResult = DiscResult::where('user_id', $user_id)->orderBy('created_at', 'desc')->first();
+    
+        if ($lastDiscResult) {
+            return response()->json([
+                'last_disc_result' => $lastDiscResult,
+                'created_at' => $lastDiscResult->created_at,
+            ]);
+            } else {
+            return response()->json(['message' => 'No results found'], 404);
+        }
+    }
+
+
+    public function getHollandResults(Request $request)
+    {
+        $user_id = $request->user_id;
+        $hollandResults = HollandPersona::where('user_id', $user_id)->get();
+        $hollandResults = [
+            ['letter' => $hollandResults[0]->first_type, 'value' => $hollandResults[0]->first_score],
+            ['letter' => $hollandResults[0]->second_type, 'value' => $hollandResults[0]->second_score],
+            ['letter' => $hollandResults[0]->third_type, 'value' => $hollandResults[0]->third_score],
+        ];
+    
+        // Format the results
+        $formattedResults = array_map(function($result) {
+            return [
+                'letter' => $result['letter'],
+                'value' => $result['value']
+            ];
+        }, $hollandResults);
+    
+        return response()->json(['holland_results' => $formattedResults]);  
+      }
+
 }
