@@ -211,6 +211,7 @@ if($countdiscresult > 0){
                 'test_number' => $testNumber,
                 'category' => $value['letter'],
                 'score' => $value['value'],
+                'percentage'=>($value['value'] / 80) * 100
                 // 'percentage' => $result['percentage'],
             ]);
         }
@@ -259,5 +260,35 @@ if($countdiscresult > 0){
     
         return response()->json(['holland_results' => $formattedResults]);  
       }
+
+
+
+    
+    public function getThakaatResults(Request $request){
+        $user_id = $request->user_id;
+
+        // Retrieve the latest thakaat_result for the user
+        $thakaatResult = ThakaatResult::where('user_id', $user_id)->get();
+
+        if ($thakaatResult) {
+      
+            $formattedResults = $thakaatResult->map(function($result) {
+                return [
+                    'id' => $result->id,
+                    'user_id' => $result->user_id,
+                    'score' => $result->score,
+                    'category' => $result->category,
+                    'created_at' => $result->created_at,
+                    'updated_at' => $result->updated_at,
+                ];
+            });
+    
+            return response()->json(['thakaat_result' => $formattedResults]);
+
+        } else {
+            return response()->json(['message' => 'No thakaat result found for this user'], 404);
+        }
+    }
+
 
 }
