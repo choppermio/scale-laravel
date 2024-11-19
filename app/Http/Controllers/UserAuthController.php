@@ -111,6 +111,10 @@ if($countdiscresult > 0){
             'user_id' => $user_id,
             'test_number' => $testNumber,
             'results' => json_encode($request->sorted_names), // Store as JSON
+            'top_direction' => $request->top,
+            'right_direction' => $request->right,
+            'left_direction' => $request->left,
+            'bottom_direction' => $request->bottom,
         ]);
 
         return response()->json(['message' => 'Sorted names stored successfully!']);
@@ -233,6 +237,10 @@ if($countdiscresult > 0){
             return response()->json([
                 'last_disc_result' => $lastDiscResult,
                 'created_at' => $lastDiscResult->created_at,
+                'top_direction' => $lastDiscResult->top_direction,
+                'right_direction' => $lastDiscResult->right_direction,
+                'left_direction' => $lastDiscResult->left_direction,
+                'bottom_direction' => $lastDiscResult->bottom_direction,
             ]);
             } else {
             return response()->json(['message' => 'No results found'], 404);

@@ -15,7 +15,11 @@ class DiscResult extends Model
         'user_id',
         'test_number',
         'results',
-        'test_number'
+        'test_number',
+        'top_direction',
+        'right_direction',
+        'left_direction',
+        'bottom_direction',
     ];
 
     // Define the relationship with the User model (if applicable)
