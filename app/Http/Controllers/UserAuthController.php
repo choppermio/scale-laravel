@@ -97,7 +97,7 @@ class UserAuthController extends Controller
         //     'sorted_names' => 'required|array',
         //     // 'user_id' => 'required|exists:users,id', // Validate user_id
         // ]);
-
+        DiscResult::where('user_id', $request->user_id)->delete();
 $countdiscresult = DiscResult::where('user_id', $request->user_id)->count();
 if($countdiscresult > 0){
     return response()->json(['message' => 'You have already taken the test']);
