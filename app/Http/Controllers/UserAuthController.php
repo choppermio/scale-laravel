@@ -265,8 +265,9 @@ if($countdiscresult > 0){
                 'value' => $result['value']
             ];
         }, $hollandResults);
-    
-        return response()->json(['holland_results' => $formattedResults]);  
+        $hollandResults2 = HollandPersona::where('user_id', $user_id)->get();
+
+        return response()->json(['holland_results' => $formattedResults,'created_at' => $hollandResults2->created_at]);  
       }
 
 
