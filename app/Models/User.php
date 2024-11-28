@@ -26,8 +26,46 @@ class User extends Authenticatable
         'id_number', // Add id_number
         'mobile', // Add
         'gender', //
+        'role',
+        'school_id',
+        'school_group_id',
+        'student_id_number',
+        'date_of_birth'
 
     ];
+
+    public function school()
+    {
+        return $this->belongsTo(School::class);
+    }
+  
+    public function schoolGroup()
+    {
+        return $this->belongsTo(SchoolGroup::class);
+    }
+  
+    public function responsibleGroups()
+    {
+        return $this->hasMany(SchoolGroup::class, 'responsible_user_id');
+    }
+  
+    // Helper methods
+    public function isStudent()
+    {
+        return $this->role === 'student';
+    }
+  
+    public function isTeacher()
+    {
+        return $this->role === 'teacher';
+    }
+  
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
+
+
 
     /**
      * The attributes that should be hidden for serialization.

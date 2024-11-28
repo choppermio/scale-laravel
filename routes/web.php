@@ -39,3 +39,7 @@ Route::post('/disc-store-answers', [DiscController::class, 'submitDiscAnswers'])
 
 Route::get('/admin/users', [AdminController::class, 'users']);
 
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
