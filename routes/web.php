@@ -1,13 +1,15 @@
 <?php
 
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\DiscController;
-use App\Http\Controllers\HollandTestController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ScaleController;
-use App\Http\Controllers\ThakaatController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DiscController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ScaleController;
+use App\Http\Controllers\SchoolController;
+use App\Http\Controllers\ThakaatController;
+use App\Http\Controllers\HollandTestController;
+use App\Http\Controllers\SchoolGroupController;
 
 
 
@@ -40,6 +42,16 @@ Route::post('/disc-store-answers', [DiscController::class, 'submitDiscAnswers'])
 Route::get('/admin/users', [AdminController::class, 'users']);
 
 
+    Route::get('admin/schoolgroups', [SchoolGroupController::class, 'index'])->name('admin.schoolgroups.index');
+    Route::get('admin/schoolgroups/create', [SchoolGroupController::class, 'create'])->name('admin.schoolgroups.create');
+    Route::post('admin/schoolgroups', [SchoolGroupController::class, 'store'])->name('admin.schoolgroups.store');
+    Route::get('admin/schoolgroups/{schoolgroup}', [SchoolGroupController::class, 'show'])->name('admin.schoolgroups.show');
+    Route::get('admin/schoolgroups/{schoolgroup}/edit', [SchoolGroupController::class, 'edit'])->name('admin.schoolgroups.edit');
+    Route::put('admin/schoolgroups/{schoolgroup}', [SchoolGroupController::class, 'update'])->name('admin.schoolgroups.update');
+    Route::delete('admin/schoolgroups/{schoolgroup}', [SchoolGroupController::class, 'destroy'])->name('admin.schoolgroups.destroy');
+
+
+    Route::resource('schools', SchoolController::class);
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

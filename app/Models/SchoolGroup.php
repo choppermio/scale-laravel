@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class SchoolGroup extends Model
 {
   use HasFactory;
+  protected $table = 'school_groups';
 
   /**
    * The attributes that are mass assignable.
@@ -31,6 +32,10 @@ class SchoolGroup extends Model
       return $this->belongsTo(School::class);
   }
 
+public function schools()
+{
+ $this->hasMany(School::class);
+}
   /**
    * Get the responsible teacher/user for the group
    */
@@ -39,6 +44,10 @@ class SchoolGroup extends Model
       return $this->belongsTo(User::class, 'responsible_user_id');
   }
 
+  public function responsibleUser(): BelongsTo
+  {
+      return $this->belongsTo(User::class, 'responsible_user_id');
+  }
   /**
    * Get all students in the group
    */

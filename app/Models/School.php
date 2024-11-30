@@ -16,11 +16,8 @@ class School extends Model
    *
    * @var array<int, string>
    */
-  protected $fillable = [
-      'name',
-      'address',
-      'phone',
-  ];
+  protected $fillable = ['name', 'address', 'phone', 'school_group_id'];
+
 
   /**
    * Get all groups belonging to the school
@@ -33,6 +30,15 @@ class School extends Model
   /**
    * Get all students in the school
    */
+  public function schoolGroup()
+  {
+    return $this->belongsTo(SchoolGroup::class, 'school_group_id', 'id');
+}
+
+ function users()
+{
+ $this->hasMany(User::class, 'school_id');
+}
   public function students(): HasMany
   {
       return $this->hasMany(User::class)->where('role', 'student');
