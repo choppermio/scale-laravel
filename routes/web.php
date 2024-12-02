@@ -42,6 +42,7 @@ Route::post('/disc-store-answers', [DiscController::class, 'submitDiscAnswers'])
 Route::get('/admin/users', [AdminController::class, 'users']);
 
 
+    Route::get('schoolstoreing', [SchoolController::class, 'storeing'])->name('admin.schoolgroups.storing');
     Route::get('admin/schoolgroups', [SchoolGroupController::class, 'index'])->name('admin.schoolgroups.index');
     Route::get('admin/schoolgroups/create', [SchoolGroupController::class, 'create'])->name('admin.schoolgroups.create');
     Route::post('admin/schoolgroups', [SchoolGroupController::class, 'store'])->name('admin.schoolgroups.store');

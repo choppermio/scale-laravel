@@ -23,19 +23,21 @@
                             <tr>
                                 <th>الرقم</th>
                                 <th>الاسم</th>
-                                <th>المدرسة</th>
                                 <th>المسؤول</th>
+                                <th>رابط تسجيل الطلاب</th>
                                 <th>الإجراءات</th>
                             </tr>
                         </thead>
                         <tbody>
+
                             @foreach ($SchoolGroups as $section)
                             <tr>
                                 <td>{{ $section->id }}</td>
                                 <td>{{ $section->name }}</td>
-                                <td>{{ $section->school->name ??'' }}</td>
                                 <td>{{ $section->responsibleUser->name }}</td>
+                                <td>https://sc.qimam-community.com/register?id={{ $section->id }}</td>
                                 <td>
+                                    <a href="{{ route('admin.schoolgroups.show', $section) }}" class="btn btn-sm btn-info">عرض</a>
                                     <a href="{{ route('admin.schoolgroups.edit', $section) }}" class="btn btn-sm btn-primary">تعديل</a>
                                     <form action="{{ route('admin.schoolgroups.destroy', $section) }}" method="POST" class="d-inline">
                                         @csrf

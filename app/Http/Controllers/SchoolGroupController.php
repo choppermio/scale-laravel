@@ -15,6 +15,12 @@ class SchoolGroupController extends Controller
         return view('admin.schoolgroups.index', compact('SchoolGroups'));
     }
     
+    public function show(SchoolGroup $schoolgroup)
+    {
+        $schoolgroup->load(['school', 'responsibleUser']);
+        return view('admin.schoolgroups.show', compact('schoolgroup'));
+    }
+
     public function create()
     {
         $schools = School::all();

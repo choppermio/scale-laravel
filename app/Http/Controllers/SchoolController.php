@@ -10,7 +10,7 @@ class SchoolController extends Controller
 {
     public function index()
     {
-        $schools = School::with('schoolGroup')->paginate(10);
+        $schools = School::with('schoolGroup')->paginate(150);
         return view('schools.index', compact('schools'));
     }
 
@@ -20,6 +20,37 @@ class SchoolController extends Controller
         return view('schools.create', compact('schoolGroups'));
     }
 
+    public function storeing(){
+        $jsonData = '{
+            "names": [
+                "ث76",
+                "مدرسة 72 الثانوية بحي الفضيله",
+                "مدارس الحمراء",
+                "مدرسة 102 الثانوية بحي الفضيله",
+                "مدرسة الثانوية ١١٩.حكومي",
+                "الثانويه ١١٧",
+                "مدارس القلم",
+                "الفيصلية",
+                "ثانوية 40",
+                "الثانوية 38",
+                "مدرسة 93 الثانوية بحي الحرازات",
+                "الثانويه 105",
+                "ثانوية ٣٧",
+                "ثانوية 45"
+            ]
+        }';
+        
+        $data = json_decode($jsonData, true);
+        
+        foreach ($data['names'] as $name) {
+            School::create([
+                'name' => $name,
+                'address' => 'Default Address', // Replace with actual address if available
+                'phone' => '0000000000', // Replace with actual phone number if available
+                'school_group_id' => 10
+            ]);
+        }
+    }
     public function store(Request $request)
     {
         $validated = $request->validate([

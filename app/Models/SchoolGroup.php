@@ -27,9 +27,9 @@ class SchoolGroup extends Model
   /**
    * Get the school that owns the group
    */
-  public function school(): BelongsTo
+  public function school()
   {
-      return $this->belongsTo(School::class);
+      return $this->hasMany(School::class);
   }
 
 public function schools()

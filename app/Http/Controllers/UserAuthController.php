@@ -13,11 +13,16 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use App\Models\School;
 
 
 class UserAuthController extends Controller
 {
-    
+    public function schools(){
+        return School::where('school_group_id', (int)$_GET['id'] )->get();
+             
+
+    }
     public function register(Request $request)
     {
         // return 'register';
@@ -25,6 +30,7 @@ class UserAuthController extends Controller
         $registerUserData = $request->validate([
             'name' => 'required|string',
             'email' => 'required|string|email|unique:users',
+            'school'=> 'required',
             'password' => 'required|min:8',
             'gender' => 'required|string|in:male,female', // Validate gender
             'id_number' => 'required|string|unique:users', // Validate id_number
@@ -35,6 +41,7 @@ class UserAuthController extends Controller
         $user = User::create([
             'name' => $registerUserData['name'],
             'email' => $registerUserData['email'],
+            'school_id' => $registerUserData['school'],
             'password' => Hash::make($registerUserData['password']),
             'gender' => $registerUserData['gender'], // Add gender
             'id_number' => $registerUserData['id_number'], // Add id_number
@@ -265,9 +272,12 @@ if($countdiscresult > 0){
                 'value' => $result['value']
             ];
         }, $hollandResults);
-        $hollandResults2 = HollandPersona::where('user_id', $user_id)->get();
+        $hollandResults2 = HollandPersona::where('user_id', $user_id)->first();
+        $created_at = $hollandResults2->created_at;
+        // return $created_at;
+        // return $hollandResults2;
 
-        return response()->json(['holland_results' => $formattedResults,'created_at' => $hollandResults2->created_at]);  
+        return response()->json(['holland_results' => $formattedResults,'created_at' => $created_at]);  
       }
 
 
