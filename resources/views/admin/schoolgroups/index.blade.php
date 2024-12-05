@@ -34,7 +34,7 @@
                             <tr>
                                 <td>{{ $section->id }}</td>
                                 <td>{{ $section->name }}</td>
-                                <td>{{ $section->responsibleUser->name }}</td>
+                                <td>{{ $section->responsibleUser->name ??'لايوجد'}}</td>
                                 <td>https://sc.qimam-community.com/register?id={{ $section->id }}</td>
                                 <td>
                                     <a href="{{ route('admin.schoolgroups.show', $section) }}" class="btn btn-sm btn-info">عرض</a>

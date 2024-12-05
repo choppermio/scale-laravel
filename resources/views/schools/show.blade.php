@@ -28,7 +28,9 @@
                     <h3>المستخدمون في المدرسة</h3>
                 </div>
                 <div class="card-body">
-                    <table class="table">
+                    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+
+                    <table class="table" id="example">
                         <thead>
                             <tr>
                                 <th>الاسم</th>
@@ -54,9 +56,24 @@
     $hollandPersona = \App\Models\HollandPersona::where('user_id', $user->id)->first();
 @endphp
 @if ($hollandPersona)
-{{ $hollandPersona->first_type }}: {{ $hollandPersona->first_score }},
-{{ $hollandPersona->second_type }}: {{ $hollandPersona->second_score }},
-{{ $hollandPersona->third_type }}: {{ $hollandPersona->third_score }}
+    @php
+        $typeTranslations = [
+            'R' => 'واقعي',
+            'I' => 'استقصائي',
+            'A' => 'فني',
+            'S' => 'اجتماعي',
+            'E' => 'مغامر',
+            'C' => 'تقليدي'
+        ];
+
+        $firstType = $typeTranslations[$hollandPersona->first_type] ?? $hollandPersona->first_type;
+        $secondType = $typeTranslations[$hollandPersona->second_type] ?? $hollandPersona->second_type;
+        $thirdType = $typeTranslations[$hollandPersona->third_type] ?? $hollandPersona->third_type;
+    @endphp
+
+    {{ $firstType }}: {{ $hollandPersona->first_score }}<br />
+    {{ $secondType }}: {{ $hollandPersona->second_score }}<br />
+    {{ $thirdType }}: {{ $hollandPersona->third_score }}
 @else
 No data
 @endif
@@ -66,9 +83,22 @@ No data
                                         @php
                                             $thakaatResults = \App\Models\ThakaatResult::where('user_id', $user->id)->get();
                                         @endphp
-                                        @foreach ($thakaatResults as $result)
-                                            {{ $result->category }}: {{ $result->score }} ({{ $result->percentage }}%)<br>
-                                        @endforeach
+                                       @php
+                                       $intelligenceTypes = [
+                                           'L' => 'الذكاء اللغوي',
+                                           'M' => 'الذكاء المنطقي الرياضي',
+                                           'V' => 'الذكاء البصري',
+                                           'B' => 'الذكاء البيولوجي',
+                                           'N' => 'الذكاء الطبيعي',
+                                           'I' => 'الذكاء المكاني',
+                                           'U' => 'الذكاء الموسيقي',
+                                           'P' => 'الذكاء الشخصي'
+                                       ];
+                                   @endphp
+                                   
+                                   @foreach ($thakaatResults as $result)
+                                       {{ $intelligenceTypes[$result->category] ?? $result->category }}: {{ $result->score }} ({{ $result->percentage }}%)<br>
+                                   @endforeach
                                     </td>
                                     <td>
                                         @php
@@ -77,15 +107,14 @@ No data
                                         @endphp
                                         @if ($discData)
                                             @foreach ($discData as $key => $value)
-                                             {{ $value}} , 
+                                             {{ $value}} 
                                             @endforeach
                                         @else
                                             No data
                                         @endif
                                     </td>
                                 
-                                <td>{{ $user->email }}</td>
-                                <td>{{ $user->email }}</td>
+                                
                                 {{-- <td>{{ $user->role ?? 'مستخدم' }}</td> --}}
                                 {{-- <td>{{ $user->created_at->format('Y-m-d') }}</td> --}}
                             </tr>
@@ -99,6 +128,29 @@ No data
             <div class="mt-3">
                 <a href="{{ route('schools.index') }}" class="btn btn-secondary">رجوع</a>
             </div>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <!-- Include DataTables JS -->
+            <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+            <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Include DataTables JS -->
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <!-- Include DataTables Buttons JS -->
+    <script src="https://cdn.datatables.net/buttons/2.1.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.1.0/js/buttons.flash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.1.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.1.0/js/buttons.print.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#example').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'excel'
+                ]
+            });
+        });
+    </script>
         </div>
     </div>
 </div>

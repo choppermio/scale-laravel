@@ -314,10 +314,10 @@
                     <td>
                       <div class="d-flex px-2 py-1">
                         <div>
-                          <img src="../assets/img/small-logos/logo-xd.svg" class="avatar avatar-sm ms-3">
+                          <img src="https://www.qimam.org.sa/rafed/uploads/system/widelogo.png" class="avatar avatar-sm ms-3">
                         </div>
                         <div class="d-flex flex-column justify-content-center">
-                          <h6 class="mb-0 text-sm">Soft UI XD الإصدار</h6>
+                          {{-- <h6 class="mb-0 text-sm">Soft UI XD الإصدار</h6> --}}
                         </div>
                       </div>
                     </td>
