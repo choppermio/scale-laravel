@@ -29,20 +29,21 @@ class UserAuthController extends Controller
         // Validate the incoming request data
         $registerUserData = $request->validate([
             'name' => 'required|string',
-            'email' => 'required|string|email|unique:users',
+            // 'email' => 'required|string|email|unique:users',
             'school'=> 'required',
-            'password' => 'required|min:8',
+            // 'password' => 'required|min:8',
             'gender' => 'required|string|in:male,female', // Validate gender
             'id_number' => 'required|string|unique:users', // Validate id_number
             'mobile' => 'required|string|unique:users', // Validate mobile
         ]);
+        // return $request->email;
     
         // Create a new user with the validated data
         $user = User::create([
             'name' => $registerUserData['name'],
-            'email' => $registerUserData['email'],
+            'email' =>  $request->email,
             'school_id' => $registerUserData['school'],
-            'password' => Hash::make($registerUserData['password']),
+            'password' => Hash::make('123456'),
             'gender' => $registerUserData['gender'], // Add gender
             'id_number' => $registerUserData['id_number'], // Add id_number
             'mobile' => $registerUserData['mobile'], // Add id_number
