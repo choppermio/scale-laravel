@@ -137,7 +137,8 @@ if($countdiscresult > 0){
     {
 
        
-        
+        HollandPersona::where('user_id', $request->user_id)->delete();
+
         try {
             // DB::beginTransaction();
 
@@ -204,6 +205,9 @@ if($countdiscresult > 0){
 
     public function storeThakaatResults(Request $request)
     {
+
+        ThakaatResult::where('user_id', $request->user_id)->delete();
+
         $validatedData = $request->validate([
             'results' => 'required|array',
            
