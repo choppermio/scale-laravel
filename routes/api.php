@@ -16,4 +16,6 @@ Route::post('logout',[UserAuthController::class,'logout'])
   Route::get('getHollandResults/{user_id}',[UserAuthController::class,'getHollandResults']);
   Route::get('getThakaatResults/{user_id}',[UserAuthController::class,'getThakaatResults']);
   Route::get('schools',[UserAuthController::class,'schools']);
+  Route::post('resultStore',[UserAuthController::class,'resultStore']);
+  Route::post('getResults',[UserAuthController::class,'getResults']);
 

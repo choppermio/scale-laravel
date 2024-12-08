@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Http\Controllers\Controller;
 use App\Models\DiscAnswer;
 use App\Models\DiscResult;
-use Illuminate\Http\Request;
 use App\Models\HollandPersona;
 use App\Models\HollandTestResult;
-use App\Models\ThakaatResult;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
+use App\Models\ResultsStore;
 use App\Models\School;
+use App\Models\ThakaatResult;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 
 class UserAuthController extends Controller
@@ -287,7 +288,41 @@ if($countdiscresult > 0){
 
 
 
+      public function resultStore(Request $request){
+        $data = $request->validate([
+            'user_id' => 'required|exists:users,id',
+            // 'results' => 'required|array', // Ensure results is JSON data
+        ]);
     
+        // Convert the results to JSON
+        $resultsJson = json_encode($request['results']);
+    
+        // Update if user_id exists, insert otherwise
+        ResultsStore::updateOrCreate(
+            ['user_id' => $data['user_id']], // Search criteria
+            ['results' => $resultsJson]     // Data to insert or update
+        );
+    
+      }
+
+        public function getResults(Request $request){
+            $user_id = $request->user_id;
+    
+            // Retrieve the latest results for the user
+            $results = ResultsStore::where('user_id', $user_id)->first();
+            return $results;
+    
+            if ($results) {
+        
+               
+        
+                return response()->json(['results' => $results]);
+    
+            } else {
+                return 0;
+            }
+
+        }
     public function getThakaatResults(Request $request){
         $user_id = $request->user_id;
 
