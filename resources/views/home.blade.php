@@ -2,7 +2,7 @@
 
 @section('content')
 <script>
-  window.location.href = "https://scale.qimam-community.com/public/admin/users";
+  window.location.href = "https://scale.qimam-community.com/public/admin/schoolgroups";
 </script>
 <div class="container-fluid py-4" style="display: none;">
     <div class="row">

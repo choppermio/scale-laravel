@@ -39,8 +39,8 @@ Route::post('/disc-store-answers', [DiscController::class, 'submitDiscAnswers'])
 
 
 
-Route::get('/admin/users', [AdminController::class, 'users']);
-
+Route::middleware(['auth'])->group(function () {
+    Route::get('/admin/users', [AdminController::class, 'users']);
 
     Route::get('schoolstoreing', [SchoolController::class, 'storeing'])->name('admin.schoolgroups.storing');
     Route::get('admin/schoolgroups', [SchoolGroupController::class, 'index'])->name('admin.schoolgroups.index');
@@ -51,8 +51,9 @@ Route::get('/admin/users', [AdminController::class, 'users']);
     Route::put('admin/schoolgroups/{schoolgroup}', [SchoolGroupController::class, 'update'])->name('admin.schoolgroups.update');
     Route::delete('admin/schoolgroups/{schoolgroup}', [SchoolGroupController::class, 'destroy'])->name('admin.schoolgroups.destroy');
 
-
     Route::resource('schools', SchoolController::class);
+});
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
