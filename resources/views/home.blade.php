@@ -1,8 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-
-<div class="container-fluid py-4">
+<script>
+  window.location.href = "https://scale.qimam-community.com/public/admin/users";
+</script>
+<div class="container-fluid py-4" style="display: none;">
     <div class="row">
       <div class="col-lg-3 col-sm-6 mb-lg-0 mb-4">
         <div class="card">
