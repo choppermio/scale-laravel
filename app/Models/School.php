@@ -35,6 +35,8 @@ class School extends Model
     return $this->belongsTo(SchoolGroup::class, 'school_group_id', 'id');
 }
 
+
+
  function users()
 {
  $this->hasMany(User::class, 'school_id');

@@ -25,6 +25,7 @@
                                 <th>العنوان</th>
                                 <th>الهاتف</th>
                                 <th>المجموعة</th>
+                          
                                 <th>الإجراءات</th>
                             </tr>
                         </thead>
@@ -35,6 +36,7 @@
                                 <td>{{ $school->address }}</td>
                                 <td>{{ $school->phone }}</td>
                                 <td>{{ $school->schoolGroup->name ?? 'غير محدد' }}</td>
+                                
                                 <td>
                                     <a href="{{ route('schools.show', $school) }}" class="btn btn-sm btn-info">عرض</a>
                                     <a href="{{ route('schools.edit', $school) }}" class="btn btn-sm btn-primary">تعديل</a>

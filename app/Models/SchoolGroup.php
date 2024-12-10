@@ -31,12 +31,11 @@ class SchoolGroup extends Model
   {
       return $this->hasMany(School::class);
   }
-
-public function schools()
-{
- $this->hasMany(School::class);
-}
-  /**
+public function schools()  
+  {  
+   $this->hasMany(School::class);  
+  }
+   /**
    * Get the responsible teacher/user for the group
    */
   public function responsible(): BelongsTo

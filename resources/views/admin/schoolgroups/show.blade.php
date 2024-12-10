@@ -31,7 +31,7 @@
                             <tr>
                                 <th>الاسم</th>
                                 <th>البريد الإلكتروني</th>
-                                <th>الدور</th>
+                                <th>عدد الطلاب</th>
                                 <th>الطلاب</th>
                             </tr>
                         </thead>
@@ -41,7 +41,22 @@
                             <tr>
                                 <td>{{ $school->name }}</td>
                                 <td>{{ $school->address }}</td>
-                                <td>{{ $school->mobile ?? 'لايوجد' }}</td>
+                                {{-- <td>{{ $school->mobile ?? 'لايوجد' }}</td> --}}
+                                <td>
+
+                                    @php
+           $schools = \App\Models\School::where('id', $school->id)->get();
+        //    dd($schools);
+    $sumuser = 0;
+    foreach ($schools as $school) {
+        $students = \App\Models\User::where('school_id', $school->id)->get();
+        $sumuser += $students->count();
+    }
+
+@endphp
+
+{{ $sumuser }}
+                                </td>
                                 <td><a href="{{ route('schools.show', $school->id) }}" class="btn btn-sm btn-info">عرض</a></td>
                                 {{-- <td>{{ $user->role ?? 'مستخدم' }}</td> --}}
                                 {{-- <td>{{ $user->created_at->format('Y-m-d') }}</td> --}}
