@@ -69,7 +69,7 @@ class SchoolController extends Controller
     public function show(School $school)
     {
 
-    // $users = $school->users->paginate(10);
+    // $users = $school->users->all();
     
     
     return view('schools.show', compact('school'));

@@ -44,7 +44,7 @@
                         </thead>
                         <tbody>
                             @php
-                                $users = \App\Models\User::where('school_id',$school->id)->paginate(10);
+                                $users = \App\Models\User::where('school_id',$school->id)->all();
                             @endphp
                             @foreach ($users as $user)
                             <tr>
