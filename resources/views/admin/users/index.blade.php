@@ -11,6 +11,7 @@ $users = App\Models\User::all();
         <tr>
           <th>رقم المستخدم</th>
           <th>اسم المستخدم</th>
+          <th>رقم الجوال</th>
           <th>البريد الإلكتروني</th>
           <th>نتائج الإختبارات</th>
         </tr>
@@ -20,6 +21,7 @@ $users = App\Models\User::all();
           <tr>
             <td>{{ $user->id }}</td>
             <td>{{ $user->name }}</td>
+            <td>{{ $user->mobile }}</td>
             <td>{{ $user->email }}</td>
             <td><a href="{{ url('home/?user_id=' . $user->id) }}">عرض النتائج</a></td>
 
