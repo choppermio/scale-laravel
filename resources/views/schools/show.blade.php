@@ -34,7 +34,7 @@
                         <thead>
                             <tr>
                                 <th>الاسم</th>
-                                <!-- <th>البريد الإلكتروني</th> -->
+                                <th>رقم الجوال</th>
                                 <th>نتائج هولاند</th>
                                 <th>نتائج الذكاءات</th>
                                 <th>نتائج ديسك</th>
@@ -49,7 +49,7 @@
                             @foreach ($users as $user)
                             <tr>
                                 <td>{{ $user->name }}</td>
-                                <!-- <td>{{ $user->email }}</td> -->
+                                <td>{{ $user->mobile }}</td>
 
                                 <td>
                                     @php
